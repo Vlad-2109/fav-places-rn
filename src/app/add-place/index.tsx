@@ -1,8 +1,14 @@
 import { StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import PlaceForm from '@/components/Places/PlaceForm';
+
 const AddPlaceScreen = () => {
-	return <SafeAreaView style={styles.container}></SafeAreaView>;
+	return (
+		<SafeAreaView style={styles.container}>
+			<PlaceForm />
+		</SafeAreaView>
+	);
 };
 
 export default AddPlaceScreen;
