@@ -6,7 +6,7 @@ import PlaceForm from '@/components/Places/PlaceForm';
 
 const AddPlaceScreen = () => {
 	return (
-		<SafeAreaView style={styles.container}>
+		<SafeAreaView edges={['left', 'right']} style={styles.container}>
 			<Stack.Screen options={{ title: 'Add a new Place' }} />
 			<PlaceForm />
 		</SafeAreaView>
