@@ -12,7 +12,7 @@ const AllPlacesScreen = () => {
 		<SafeAreaView style={styles.container}>
 			<Stack.Screen
 				options={{
-					title: 'All Places',
+					title: 'Your Favorite Places',
 					headerRight: ({ tintColor }) => (
 						<IconButton
 							icon="add"
