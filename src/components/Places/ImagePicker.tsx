@@ -1,11 +1,14 @@
+import { Colors } from '@/constants/colors';
 import {
-    launchCameraAsync,
-    PermissionStatus,
-    useCameraPermissions,
+	launchCameraAsync,
+	PermissionStatus,
+	useCameraPermissions,
 } from 'expo-image-picker';
-import { Alert, Button, StyleSheet, View } from 'react-native';
+import { useState } from 'react';
+import { Alert, Button, Image, StyleSheet, Text, View } from 'react-native';
 
 const ImagePicker = () => {
+	const [pickedImage, setPickedImage] = useState<string | undefined>(undefined);
 	const [cameraPermissionInformation, requestPermission] =
 		useCameraPermissions();
 
@@ -36,12 +39,18 @@ const ImagePicker = () => {
 			aspect: [16, 9],
 			quality: 0.5,
 		});
-		console.log(image);
+		setPickedImage(image.assets?.[0]?.uri);
 	};
+
+	let imagePreview = <Text>No image taken yet.</Text>;
+
+	if (pickedImage) {
+		imagePreview = <Image source={{ uri: pickedImage }} style={styles.image} />;
+	}
 
 	return (
 		<View>
-			<View></View>
+			<View style={styles.imagePreview}>{imagePreview}</View>
 			<Button title="Take Image" onPress={handleTakeImage} />
 		</View>
 	);
@@ -49,4 +58,19 @@ const ImagePicker = () => {
 
 export default ImagePicker;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+	imagePreview: {
+		width: '100%',
+		height: 200,
+		marginVertical: 8,
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: Colors.primary100,
+		borderRadius: 4,
+	},
+	image: {
+		width: '100%',
+		height: '100%',
+		borderRadius: 4,
+	},
+});
