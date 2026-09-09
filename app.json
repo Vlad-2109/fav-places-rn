@@ -38,6 +38,12 @@
 				{
 					"cameraPermission": "The app needs access to your camera to take photos of your favorite places."
 				}
+			],
+			[
+				"expo-location",
+				{
+					"locationAlwaysAndWhenInUsePermission": "Allow Fav Places to use your location."
+				}
 			]
 		],
 		"experiments": {
