@@ -3,8 +3,8 @@ import {
 	PermissionStatus,
 	useForegroundPermissions,
 } from 'expo-location';
-import { useRouter } from 'expo-router';
-import { useState } from 'react';
+import { useIsFocused, useLocalSearchParams, useRouter } from 'expo-router';
+import { useEffect, useState } from 'react';
 import { Alert, Image, StyleSheet, Text, View } from 'react-native';
 
 import { Colors } from '@/constants/colors';
@@ -16,9 +16,12 @@ const LocationPicker = () => {
 		latitude: number;
 		longitude: number;
 	} | null>(null);
+	const isFocused = useIsFocused();
+	const router = useRouter();
+
 	const [locationPermissionInformation, requestPermission] =
 		useForegroundPermissions();
-	const router = useRouter();
+	const { pickedLat, pickedLng } = useLocalSearchParams();
 
 	const verifyPermissions = async () => {
 		if (
@@ -68,6 +71,17 @@ const LocationPicker = () => {
 			/>
 		);
 	}
+
+	useEffect(() => {
+		if (isFocused && pickedLat && pickedLng) {
+			const mapPickedLocation = {
+				latitude: pickedLat ? Number(pickedLat) : 0,
+				longitude: pickedLng ? Number(pickedLng) : 0,
+			};
+
+			setPickedLocation(mapPickedLocation);
+		}
+	}, [router, isFocused]);
 
 	return (
 		<View>
