@@ -3,6 +3,7 @@ import {
 	PermissionStatus,
 	useForegroundPermissions,
 } from 'expo-location';
+import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { Alert, Image, StyleSheet, Text, View } from 'react-native';
 
@@ -17,6 +18,7 @@ const LocationPicker = () => {
 	} | null>(null);
 	const [locationPermissionInformation, requestPermission] =
 		useForegroundPermissions();
+	const router = useRouter();
 
 	const verifyPermissions = async () => {
 		if (
@@ -52,7 +54,7 @@ const LocationPicker = () => {
 	};
 
 	const handlePickOnMap = () => {
-		console.log('Pick on Map');
+		router.push('/map');
 	};
 
 	let locationPreview = <Text>No location picked yet.</Text>;
@@ -102,6 +104,6 @@ const styles = StyleSheet.create({
 	},
 	image: {
 		width: '100%',
-        height: '100%',
+		height: '100%',
 	},
 });
