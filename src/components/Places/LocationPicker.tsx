@@ -81,7 +81,7 @@ const LocationPicker = () => {
 
 			setPickedLocation(mapPickedLocation);
 		}
-	}, [router, isFocused]);
+	}, [isFocused]);
 
 	return (
 		<View>
