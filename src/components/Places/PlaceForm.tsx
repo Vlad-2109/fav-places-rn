@@ -12,6 +12,7 @@ const PlaceForm = () => {
 	const [pickedLocation, setPickedLocation] = useState<{
 		lat: number;
 		lng: number;
+		address: string;
 	} | null>(null);
 	const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
@@ -24,8 +25,12 @@ const PlaceForm = () => {
 	};
 
 	const handlePickLocation = useCallback(
-		(location: { latitude: number; longitude: number }) => {
-			setPickedLocation({ lat: location.latitude, lng: location.longitude });
+		(location: { latitude: number; longitude: number; address: string }) => {
+			setPickedLocation({
+				lat: location.latitude,
+				lng: location.longitude,
+				address: location.address,
+			});
 		},
 		[],
 	);

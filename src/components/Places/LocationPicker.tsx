@@ -8,11 +8,15 @@ import { useEffect, useState } from 'react';
 import { Alert, Image, StyleSheet, Text, View } from 'react-native';
 
 import { Colors } from '@/constants/colors';
-import { getMapPreview } from '@/utils/location';
+import { getAdress, getMapPreview } from '@/utils/location';
 import OutlineButton from '../UI/OutlineButton';
 
 type LocationPickerProps = {
-	onPickLocation: (location: { latitude: number; longitude: number }) => void;
+	onPickLocation: (location: {
+		latitude: number;
+		longitude: number;
+		address: string;
+	}) => void;
 };
 
 const LocationPicker = ({ onPickLocation }: LocationPickerProps) => {
@@ -88,9 +92,17 @@ const LocationPicker = ({ onPickLocation }: LocationPickerProps) => {
 	}, [isFocused]);
 
 	useEffect(() => {
-		if (pickedLocation) {
-			onPickLocation(pickedLocation);
-		}
+		const handleLocation = async () => {
+			if (pickedLocation) {
+				const address = await getAdress(
+					pickedLocation.latitude,
+					pickedLocation.longitude,
+				);
+				onPickLocation({ ...pickedLocation, address });
+			}
+		};
+
+		handleLocation();
 	}, [pickedLocation, onPickLocation]);
 
 	return (
