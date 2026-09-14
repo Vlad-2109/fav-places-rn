@@ -11,7 +11,11 @@ import { Colors } from '@/constants/colors';
 import { getMapPreview } from '@/utils/location';
 import OutlineButton from '../UI/OutlineButton';
 
-const LocationPicker = () => {
+type LocationPickerProps = {
+	onPickLocation: (location: { latitude: number; longitude: number }) => void;
+};
+
+const LocationPicker = ({ onPickLocation }: LocationPickerProps) => {
 	const [pickedLocation, setPickedLocation] = useState<{
 		latitude: number;
 		longitude: number;
@@ -82,6 +86,12 @@ const LocationPicker = () => {
 			setPickedLocation(mapPickedLocation);
 		}
 	}, [isFocused]);
+
+	useEffect(() => {
+		if (pickedLocation) {
+			onPickLocation(pickedLocation);
+		}
+	}, [pickedLocation, onPickLocation]);
 
 	return (
 		<View>
