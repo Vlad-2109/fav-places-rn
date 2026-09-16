@@ -31,6 +31,9 @@ const PlacesList = ({ places }: PlacesListProps) => {
 export default PlacesList;
 
 const styles = StyleSheet.create({
+	list: {
+		margin: 24,
+	},
 	fallbackContainer: {
 		flex: 1,
 		justifyContent: 'center',

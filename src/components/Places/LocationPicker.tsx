@@ -65,7 +65,7 @@ const LocationPicker = ({ onPickLocation }: LocationPickerProps) => {
 	};
 
 	const handlePickOnMap = () => {
-		router.push('/map');
+		router.navigate('/map');
 	};
 
 	let locationPreview = <Text>No location picked yet.</Text>;

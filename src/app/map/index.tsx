@@ -32,7 +32,7 @@ const MapScreen = () => {
 	};
 
 	const handleSavePickedLocation = useCallback(() => {
-		router.push({
+		router.navigate({
 			pathname: '/add-place',
 			params: {
 				pickedLat: selectedLocation.lat,
