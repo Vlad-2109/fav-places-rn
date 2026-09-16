@@ -8,6 +8,8 @@ import IconButton from '@/components/UI/IconButton';
 const AllPlacesScreen = () => {
 	const router = useRouter();
 
+
+	
 	return (
 		<SafeAreaView style={styles.container}>
 			<Stack.Screen

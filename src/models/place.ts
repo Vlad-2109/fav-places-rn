@@ -1,14 +1,16 @@
 export type PlaceParams = {
 	title: string;
 	imageUri: string;
-	address: string;
 	location: {
 		lat: number;
 		lng: number;
+		address: string;
 	};
 };
 
-class Place {
+export type PlaceModel = InstanceType<typeof Place>;
+
+export class Place {
 	id: string;
 	title: string;
 	imageUri: string;
@@ -17,11 +19,14 @@ class Place {
 		lat: number;
 		lng: number;
 	};
-	constructor({ title, imageUri, address, location }: PlaceParams) {
+	constructor({ title, imageUri, location }: PlaceParams) {
 		this.id = new Date().toString() + Math.random().toString();
 		this.title = title;
 		this.imageUri = imageUri;
-		this.address = address;
-		this.location = location;
+		this.address = location.address;
+		this.location = {
+			lat: location.lat,
+			lng: location.lng,
+		};
 	}
 }

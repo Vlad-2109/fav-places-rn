@@ -1,14 +1,27 @@
-import { Stack } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
 import { StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
+import type { PlaceModel } from '@/models/place';
 
 import PlaceForm from '@/components/Places/PlaceForm';
 
 const AddPlaceScreen = () => {
+	const router = useRouter();
+
+	const handleCreatePlace = (place: PlaceModel) => {
+		router.push({
+			pathname: '/',
+			params: {
+				place: JSON.stringify(place),
+			},
+		});
+	};
+
 	return (
 		<SafeAreaView edges={['left', 'right']} style={styles.container}>
 			<Stack.Screen options={{ title: 'Add a new Place' }} />
-			<PlaceForm />
+			<PlaceForm onCreatePlace={handleCreatePlace} />
 		</SafeAreaView>
 	);
 };
