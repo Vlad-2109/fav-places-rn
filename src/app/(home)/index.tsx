@@ -1,15 +1,26 @@
-import { Stack, useRouter } from 'expo-router';
+import { Stack, useLocalSearchParams, useRouter, useIsFocused } from 'expo-router';
+import { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import PlacesList from '@/components/Places/PlacesList';
 import IconButton from '@/components/UI/IconButton';
+import type { PlaceModel } from '@/models/place';
 
 const AllPlacesScreen = () => {
+	const [loadedPlaces, setLoadedPlaces] = useState<PlaceModel[]>([]);
+
 	const router = useRouter();
+	const isFocused = useIsFocused();
+	const { place } = useLocalSearchParams<{ place: string }>();
+	const parsedPlace = place ? JSON.parse(place) : null;
 
+	useEffect(() => {
+		if (isFocused && place) {
+			setLoadedPlaces((prevValue) => [...prevValue, parsedPlace]);
+		}
+	}, [isFocused, parsedPlace]);
 
-	
 	return (
 		<SafeAreaView style={styles.container}>
 			<Stack.Screen
@@ -25,7 +36,7 @@ const AllPlacesScreen = () => {
 					),
 				}}
 			/>
-			<PlacesList places={[]} />
+			<PlacesList places={loadedPlaces} />
 		</SafeAreaView>
 	);
 };

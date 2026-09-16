@@ -1,9 +1,9 @@
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 
-import type { Place } from '@/types';
+import type { PlaceModel } from '@/models/place';
 
 type PlaceItemProps = {
-	place: Place;
+	place: PlaceModel;
 	onSelect: () => void;
 };
 
@@ -21,6 +21,4 @@ const PlaceItem = ({ place, onSelect }: PlaceItemProps) => {
 
 export default PlaceItem;
 
-const styles = StyleSheet.create({
-    
-});
+const styles = StyleSheet.create({});

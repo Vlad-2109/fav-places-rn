@@ -1,12 +1,12 @@
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 
+import { Colors } from '@/constants/colors';
+import type { PlaceModel } from '@/models/place';
+
 import PlaceItem from './PlaceItem';
 
-import { Colors } from '@/constants/colors';
-import type { Place } from '@/types';
-
 type PlacesListProps = {
-	places: (Place & { id: string })[];
+	places: PlaceModel[];
 };
 
 const PlacesList = ({ places }: PlacesListProps) => {
