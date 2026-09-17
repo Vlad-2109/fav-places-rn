@@ -12,12 +12,7 @@ const AddPlaceScreen = () => {
 
 	const handleCreatePlace = async (place: PlaceModel) => {
 		await insertPlace(place);
-		router.push({
-			pathname: '/',
-			params: {
-				place: JSON.stringify(place),
-			},
-		});
+		router.back();
 	};
 
 	return (

@@ -19,11 +19,13 @@ const PlacesList = ({ places }: PlacesListProps) => {
 			</View>
 		);
 	}
+
 	return (
 		<FlatList
 			keyExtractor={(item) => item.id}
 			data={places}
 			renderItem={({ item }) => <PlaceItem place={item} onSelect={() => {}} />}
+			style={styles.list}
 		/>
 	);
 };

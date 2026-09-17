@@ -1,28 +1,33 @@
-import { Stack, useLocalSearchParams, useRouter, useIsFocused } from 'expo-router';
+import { Stack, useIsFocused, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import type { PlaceModel } from '@/models/place';
+import { fetchPlaces } from '@/utils/database';
+
 import PlacesList from '@/components/Places/PlacesList';
 import IconButton from '@/components/UI/IconButton';
-import type { PlaceModel } from '@/models/place';
 
 const AllPlacesScreen = () => {
 	const [loadedPlaces, setLoadedPlaces] = useState<PlaceModel[]>([]);
 
 	const router = useRouter();
 	const isFocused = useIsFocused();
-	const { place } = useLocalSearchParams<{ place: string }>();
-	const parsedPlace = place ? JSON.parse(place) : null;
 
 	useEffect(() => {
-		if (isFocused && place) {
-			setLoadedPlaces((prevValue) => [...prevValue, parsedPlace]);
+		async function loadPlaces() {
+			const places = await fetchPlaces();
+			setLoadedPlaces(places);
 		}
-	}, [isFocused, parsedPlace]);
+
+		if (isFocused) {
+			loadPlaces();
+		}
+	}, [isFocused]);
 
 	return (
-		<SafeAreaView style={styles.container}>
+		<SafeAreaView style={styles.container} edges={['left', 'right']}>
 			<Stack.Screen
 				options={{
 					title: 'Your Favorite Places',
@@ -46,6 +51,5 @@ export default AllPlacesScreen;
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		alignItems: 'center',
 	},
 });

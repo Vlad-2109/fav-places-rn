@@ -2,6 +2,15 @@ import * as SQLite from 'expo-sqlite';
 
 import type { PlaceModel } from '@/models/place';
 
+type PlaceRow = {
+	id: number;
+	title: string;
+	imageUri: string;
+	address: string;
+	lat: number;
+	lng: number;
+};
+
 let database: SQLite.SQLiteDatabase | null = null;
 
 export async function init() {
@@ -56,6 +65,29 @@ export async function insertPlace(place: Omit<PlaceModel, 'id'>) {
 		return result.lastInsertRowId;
 	} catch (error) {
 		console.error('Failed to insert place:', error);
+		throw error;
+	}
+}
+
+export async function fetchPlaces(): Promise<PlaceModel[]> {
+	const db = await getDatabase();
+
+	try {
+		const rows = await db.getAllAsync<PlaceRow>('SELECT * FROM places');
+
+		const places = rows.map((row) => ({
+			id: row.id.toString(),
+			title: row.title,
+			imageUri: row.imageUri,
+			address: row.address,
+			location: {
+				lat: row.lat,
+				lng: row.lng,
+			},
+		}));
+		return places;
+	} catch (error) {
+		console.error('Failed to fetch places:', error);
 		throw error;
 	}
 }
