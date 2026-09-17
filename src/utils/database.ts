@@ -1,5 +1,7 @@
 import * as SQLite from 'expo-sqlite';
 
+import type { PlaceModel } from '@/models/place';
+
 let database: SQLite.SQLiteDatabase | null = null;
 
 export async function init() {
@@ -34,4 +36,26 @@ export async function getDatabase() {
 		await init();
 	}
 	return database!;
+}
+
+export async function insertPlace(place: Omit<PlaceModel, 'id'>) {
+	const db = await getDatabase();
+
+	try {
+		const result = await db.runAsync(
+			`INSERT INTO places (title, imageUri, address, lat, lng) VALUES (?, ?, ?, ?, ?)`,
+			[
+				place.title,
+				place.imageUri,
+				place.address,
+				place.location.lat,
+				place.location.lng,
+			],
+		);
+
+		return result.lastInsertRowId;
+	} catch (error) {
+		console.error('Failed to insert place:', error);
+		throw error;
+	}
 }
