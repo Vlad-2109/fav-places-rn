@@ -1,4 +1,4 @@
-import { Stack, useLocalSearchParams } from 'expo-router';
+import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -13,8 +13,17 @@ const PlaceDetailsScreen = () => {
 	const [fetchedPlace, setFetchedPlace] = useState<PlaceModel | null>(null);
 
 	const { placeId } = useLocalSearchParams<{ placeId: string }>();
+	const router = useRouter();
 
-	const handleShowOnMap = () => {};
+	const handleShowOnMap = () => {
+		router.push({
+			pathname: '/map',
+			params: {
+				initialLat: fetchedPlace?.location.lat.toString(),
+				initialLng: fetchedPlace?.location.lng.toString(),
+			},
+		});
+	};
 
 	useEffect(() => {
 		const loadPlaceDetails = async () => {

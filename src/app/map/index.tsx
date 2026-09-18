@@ -1,4 +1,4 @@
-import { Stack, useRouter } from 'expo-router';
+import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import MapView, { Marker, type MapPressEvent } from 'react-native-maps';
@@ -12,19 +12,29 @@ type Location = {
 };
 
 const MapScreen = () => {
-	const [selectedLocation, setSelectedLocation] = useState<Location>({
-		lat: 0,
-		lng: 0,
-	});
 	const router = useRouter();
+	const { initialLat, initialLng } = useLocalSearchParams<{
+		initialLat: string;
+		initialLng: string;
+	}>();
+
+	const [selectedLocation, setSelectedLocation] = useState<Location>({
+		lat: Number(initialLat) || 0,
+		lng: Number(initialLng) || 0,
+	});
+
 	const region = {
-		latitude: 37.78,
-		longitude: -122.43,
+		latitude: Number(initialLat) || 37.78,
+		longitude: Number(initialLng) || -122.43,
 		latitudeDelta: 0.0922,
 		longitudeDelta: 0.0421,
 	};
 
 	const handleSelectLocation = (event: MapPressEvent) => {
+		if (initialLat || initialLng) {
+			return;
+		}
+
 		const lat = event.nativeEvent.coordinate.latitude;
 		const lng = event.nativeEvent.coordinate.longitude;
 
@@ -46,14 +56,20 @@ const MapScreen = () => {
 			<Stack.Screen
 				options={{
 					title: 'Map',
-					headerRight: ({ tintColor }) => (
-						<IconButton
-							icon="save"
-							size={24}
-							color={tintColor as string}
-							onPress={handleSavePickedLocation}
-						/>
-					),
+					headerRight: ({ tintColor }) => {
+						if (initialLat || initialLng) {
+							return;
+						}
+
+						return (
+							<IconButton
+								icon="save"
+								size={24}
+								color={tintColor as string}
+								onPress={handleSavePickedLocation}
+							/>
+						);
+					},
 				}}
 			/>
 			<MapView
