@@ -91,3 +91,34 @@ export async function fetchPlaces(): Promise<PlaceModel[]> {
 		throw error;
 	}
 }
+
+export async function fetchPlaceDetails(placeId: string): Promise<PlaceModel> {
+	const db = await getDatabase();
+
+	try {
+		const result = await db.getFirstAsync<PlaceRow>(
+			'SELECT * FROM places WHERE id = ?',
+			[Number(placeId)],
+		);
+
+		if (!result) {
+			throw new Error(`Place with id "${placeId}" not found`);
+		}
+
+		const place = {
+			id: result.id.toString(),
+			title: result.title,
+			imageUri: result.imageUri,
+			address: result.address,
+			location: {
+				lat: result.lat,
+				lng: result.lng,
+			},
+		};
+
+		return place;
+	} catch (error) {
+		console.error('Failed to fetch place:', error);
+		throw error;
+	}
+}
