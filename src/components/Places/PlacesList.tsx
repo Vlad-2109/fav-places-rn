@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 
 import { Colors } from '@/constants/colors';
@@ -10,6 +11,15 @@ type PlacesListProps = {
 };
 
 const PlacesList = ({ places }: PlacesListProps) => {
+	const router = useRouter();
+
+	const handleSelectPlace = (placeId: string) => {
+		router.push({
+			pathname: '/place-details',
+			params: { placeId },
+		});
+	};
+
 	if (!places || !places.length) {
 		return (
 			<View style={styles.fallbackContainer}>
@@ -24,7 +34,9 @@ const PlacesList = ({ places }: PlacesListProps) => {
 		<FlatList
 			keyExtractor={(item) => item.id}
 			data={places}
-			renderItem={({ item }) => <PlaceItem place={item} onSelect={() => {}} />}
+			renderItem={({ item }) => (
+				<PlaceItem place={item} onSelect={() => handleSelectPlace(item.id)} />
+			)}
 			style={styles.list}
 		/>
 	);
